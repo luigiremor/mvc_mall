@@ -1,6 +1,6 @@
 import tkinter as tk
 from model.clothes_model import ClothesModel
-from view.clother_view import ClothesView
+from view.clothes_view import ClothesView
 from view.login_view import LoginView
 
 
@@ -25,4 +25,6 @@ class ClothesAppController:
         self.login_view.root.destroy()  # Close the login window
         self.build()
         self.view = ClothesView(self.root, self.model)
+        self.root.title("Clothes Mall")
+        self.root.geometry("600x400")
         self.root.mainloop()

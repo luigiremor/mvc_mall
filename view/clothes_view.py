@@ -22,8 +22,8 @@ class ClothesView:
             self.root, text="Add", command=self.add_clothes)
         self.add_button.grid(row=2, column=0)
 
-        self.clothes_listbox = tk.Listbox(self.root)
-        self.clothes_listbox.grid(row=3, columnspan=5)
+        self.clothes_listbox = tk.Listbox(self.root, width=50)
+        self.clothes_listbox.grid(row=3, columnspan=2)
         self.clothes_listbox.bind("<<ListboxSelect>>", self.select_clothes)
 
         self.update_button = tk.Button(
@@ -34,7 +34,20 @@ class ClothesView:
             self.root, text="Delete", command=self.delete_clothes)
         self.delete_button.grid(row=4, column=1)
 
+        self.side_view_frame = tk.Frame(self.root, bd=2, relief=tk.SUNKEN)
+        self.side_view_frame.grid(
+            row=0, column=5, rowspan=7, padx=10, pady=10, sticky="nsew")
+
+        self.side_view_name_label = tk.Label(
+            self.side_view_frame, text="Name:")
+        self.side_view_name_label.pack()
+
+        self.side_view_price_label = tk.Label(
+            self.side_view_frame, text="Price:")
+        self.side_view_price_label.pack()
+
         self.model.add_observer(self)
+        self.update()
 
     def display_clothes(self, clothes):
         self.clothes_listbox.delete(0, tk.END)
@@ -58,6 +71,7 @@ class ClothesView:
         if selected_index:
             selected_clothes = self.clothes_listbox.get(selected_index)
             self.selected_id = int(selected_clothes.split(".")[0])
+            self.update_side_view()
 
     def update_clothes(self):
         name = self.name_entry.get()
@@ -80,5 +94,15 @@ class ClothesView:
         else:
             messagebox.showwarning("Selection Error", "Please select an item.")
 
+    def update_side_view(self):
+        if hasattr(self, "selected_id"):
+            selected_clothes = self.model.get_all_clothes()[
+                self.selected_id - 1]
+            self.side_view_name_label.config(
+                text=f"Name: {selected_clothes[1]}")
+            self.side_view_price_label.config(
+                text=f"Price: ${selected_clothes[2]}")
+
     def update(self):
         self.display_clothes(self.model.get_all_clothes())
+        self.update_side_view()
