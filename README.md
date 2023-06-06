@@ -38,4 +38,4 @@ python3 main.py
 
 ## Authors
 
-- **Luigi Remor** - _Initial work_ - [Github](github.com/luigiremor)
+- **Luigi Remor** - _Initial work_ - [Github](https://github.com/luigiremor)
